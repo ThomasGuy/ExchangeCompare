@@ -1,0 +1,10 @@
+.vscode
+*.ipynb
+.venv
+logs/
+
+__pycache__
+.ipynb*
+
+
+ticker/data/
