@@ -1,11 +1,8 @@
-import aiohttp
-import asyncio
-import json
+""" Hides the Binance exchange interface """
 import logging
 
-from aiohttp import ClientConnectionError, ClientResponseError
-from .api import Api
-from ..dataStore import NoData
+from .api import Api, NoData
+
 
 log = logging.getLogger(__name__)
 

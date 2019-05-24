@@ -1,13 +1,10 @@
-import aiohttp
-import asyncio
-import json
-
-from aiohttp import ClientResponseError, ClientConnectionError
-from .api import Api
-from ..dataStore import NoData
-
+""" Hides the Bitfinex exchange interface """
 import logging
 
+from .api import Api, NoData
+
+
+# pylint: disable=c0103
 log = logging.getLogger(__name__)
 
 host = "https://api-pub.bitfinex.com/v2/"
@@ -24,7 +21,8 @@ class Bitfinex(Api):
         self.pairs = pairs
 
     async def fetch(self, session):
-        compData = {}
+        """ request http """
+        comp_data = {}
         for pair in self.pairs:
             url = self.host + 'ticker/' + 't' + pair
             try:
@@ -34,6 +32,6 @@ class Bitfinex(Api):
             except Exception:
                 raise
             else:
-                compData[pair[:3]] = [data[2], data[0]]
+                comp_data[pair[:3]] = [data[2], data[0]]
 
-        return compData
+        return comp_data

@@ -1,20 +1,24 @@
-from dataclasses import dataclass
+"""Compare exchanges for each pair"""
 import asyncio
 import csv
 import os
+import logging
 
 # package imports
 from .interfaces import Binance, Bittrex, Bitfinex, Huobi, Bitex_la
-# from ticker import package_dir
 
+# pylint: disable=C0103
 pairs = ['BTCUSD', 'ETHUSD', 'LTCUSD']
 exchanges = ["Timestamp", "Bitfinex",
              "Bittrex", "Binance", "Huboi", "Bitex_la"]
 current_dir = os.path.dirname(os.path.realpath(__file__))
 package_dir = os.path.realpath(os.path.join(current_dir, os.pardir))
 
+log = logging.getLogger(__name__)
+
 
 def setupData():
+    """ Initialze csv files"""
     for pair in pairs:
         path = package_dir + '\\data\\' + pair[:3].lower() + '.csv'
         with open(path, mode='w') as csvfile:
@@ -25,17 +29,19 @@ def setupData():
 class Compare:
     """Compare a pair across all exchanges"""
     # setupData()
-    tasks = []
+    tasks = list()
     bfx = Bitfinex(pairs)
     bitx = Bittrex(pairs)
     binn = Binance(pairs)
     huob = Huobi(pairs)
-    bitla = Bitex_la(pairs)
+    bitla = Bitex_la(['BTCUSD'])
 
     def __init__(self, session):
         self.session = session
 
     async def addTasks(self):
+        """It appears i need to regenerate tasks for each iteration...
+        hmmm look into this"""
         self.tasks = list()
         self.tasks.append(asyncio.create_task(asyncio.sleep(10)))
         self.tasks.append(asyncio.create_task(
@@ -50,27 +56,23 @@ class Compare:
             self.bitla.fetch(self.session)))
 
     async def csvData(self, timeStamp: int):
+        """ grbe the data from each exchange instance and save to csv """
         data = await asyncio.gather(*self.tasks)
+        path = package_dir + '\\data\\'
         for pair in pairs:
             row = list()
-            path = package_dir + '\\data\\mk2\\' + pair[:3].lower() + '.csv'
+            filename = pair[:3].lower() + '.csv'
             row.append(timeStamp)
-            for item in data[1:]:
+            for idx, item in enumerate(data[1:]):
                 try:
-                    ldata = item[pair[:3]]
-                except KeyError:
-                    pass
+                    ldata = item[pair[:3]][0]
+                except KeyError as err:
+                    log.debug(f"exchange {exchanges[idx+1]} KeyError: {err}")
                 else:
-                    row += ldata
+                    row.append(ldata)
 
-            with open(path, mode='a') as csvfile:
+            with open(path + filename, mode='w') as csvfile:
                 filewriter = csv.writer(csvfile, quoting=csv.QUOTE_NONNUMERIC)
                 filewriter.writerow(row)
 
-    async def show(self):
-        # print()
-        # for val in self.data.values():
-        #     print(
-        #         f"{val.symbol}:\n Bitfinex: {val.bitfinex[-1:]}\n Bittrex: {val.bittrex[-1:]}\n"
-        #         f" Binance: {val.binance[-1:]}\n Huobi: {val.huobi[-1:]}\n Bitex_la: {val.bitex_la[-1:]}\n")
-        pass
+# pylint: enable=C0103

@@ -1,12 +1,7 @@
-import aiohttp
-import asyncio
-import json
-
-from aiohttp import ClientResponseError, ClientConnectionError
-from .api import Api
-from ..dataStore import NoData
-
+""" Hides the Bitex.la interface, only on BTC """
 import logging
+from .api import Api, NoData
+
 
 log = logging.getLogger(__name__)
 
@@ -22,7 +17,8 @@ class Bitex_la(Api):
         self.host = host
         self.pairs = pairs
 
-    async def fetch(self, session):
+    async def fetch(self, session, url=None):
+        """Generate URL"""
         compData = {}
         for pair in self.pairs:
             url = self.host + pair[:3].lower() + '_' + pair[3:].lower()

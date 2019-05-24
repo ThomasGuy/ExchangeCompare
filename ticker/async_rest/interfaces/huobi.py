@@ -1,11 +1,8 @@
-import aiohttp
-import asyncio
-import json
+""" Hides the Huboi exchange interface """
 import logging
-from aiohttp import ClientConnectionError, ClientResponseError
-from .api import Api
-from ..dataStore import NoData
+from .api import Api, NoData
 
+# pylint: disable=c0103
 log = logging.getLogger(__name__)
 
 host = "https://api.huobi.pro/market/detail/merged"

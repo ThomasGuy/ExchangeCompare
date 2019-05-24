@@ -1,11 +1,8 @@
-import aiohttp
-import asyncio
-import json
+""" Hides the Bittrex exchange interface """
 import logging
-from aiohttp import ClientConnectionError, ClientResponseError
-from .api import Api
-from ..dataStore import NoData
+from .api import Api, NoData
 
+# pylint: disable=c0103
 log = logging.getLogger(__name__)
 
 host = "https://api.bittrex.com/api/v1.1/public/getticker"  # 'USD-BTC'
@@ -25,6 +22,7 @@ class Bittrex(Api):
         }
 
     async def fetch(self, session, params=''):
+        """ Hides the Bittrex exchange interface """
         compData = {}
         for pair in self.pairs:
             self.params['market'] = pair[3:] + '-' + pair[:3]

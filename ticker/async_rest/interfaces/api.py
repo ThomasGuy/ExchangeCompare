@@ -1,13 +1,15 @@
-import asyncio
-import aiohttp
+"""Generic http request handler"""
 import json
 import logging
-
-from asyncio import TimeoutError
+import asyncio
 from aiohttp import ClientConnectionError, ClientResponseError
-from ..dataStore import NoData
 
+# pylint: disable=c0103
 log = logging.getLogger(__name__)
+
+
+class NoData(Exception):
+    """ custom exception"""
 
 
 class Api:
@@ -15,21 +17,16 @@ class Api:
     Aiohttp ClientSession
     """
 
-    async def fetch(self, session, url, params=''):
-        timeout = aiohttp.ClientTimeout(total=10)
+    async def fetch(self, session, url=None, params=''):
+        """Generic http request handler"""
+        # timeout = aiohttp.ClientTimeout(total=10)
         try:
-            async with session.get(url, timeout=timeout, params=params) as resp:
+            async with session.get(url, timeout=10, params=params) as resp:
                 resp.raise_for_status()
                 text = await resp.text()
         except KeyError as err:
             log.error(f"KeyError: {err}")
-        except ClientConnectionError as err:
+        except (ClientConnectionError, ClientResponseError, asyncio.TimeoutError) as err:
             raise NoData(err)
-        except ClientResponseError as err:
-            # log.warning(f"ClientResonseError: {err}")
-            raise NoData(err)
-        except TimeoutError as err:
-            raise NoData(err)
-
         else:
             return json.loads(text)
