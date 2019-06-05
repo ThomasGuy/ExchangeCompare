@@ -1,9 +1,10 @@
-import aiohttp
-import asyncio
+"""Kick off"""
 import time
 import logging
+import asyncio
+import aiohttp
 
-from . import Compare
+from .async_rest.compare import Compare
 
 log = logging.getLogger(__name__)
 

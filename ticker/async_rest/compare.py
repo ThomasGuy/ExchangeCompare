@@ -32,7 +32,7 @@ def setupData():
 
 class Compare:
     """Compare a pair across all exchanges"""
-    setupData()
+    # setupData()
     tasks = list()
     bfx = Bitfinex(pairs, base)
     bitx = Bittrex(pairs, base)
@@ -40,7 +40,7 @@ class Compare:
     huob = Huobi(pairs, base)
     krak = Kraken(pairs, base)
     kuco = Kucoin(pairs, base)
-    cex = Cex(pairs, base)
+    cexx = Cex(pairs, base)
     polo = Poloniex(pairs, base)
 
     def __init__(self, session):
@@ -61,6 +61,12 @@ class Compare:
             self.huob.fetch(self.session)))
         self.tasks.append(asyncio.create_task(
             self.krak.fetch(self.session)))
+        self.tasks.append(asyncio.create_task(
+            self.kuco.fetch(self.session)))
+        self.tasks.append(asyncio.create_task(
+            self.cexx.fetch(self.session)))
+        self.tasks.append(asyncio.create_task(
+            self.polo.fetch(self.session)))
 
     async def csvData(self, timeStamp: int):
         """ grab the data from each exchange instance and save to csv """
