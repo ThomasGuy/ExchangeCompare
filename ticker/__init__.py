@@ -4,7 +4,7 @@ import os
 
 from .async_rest.compare import Compare
 from .start import main
-# pylint: disable=C0103
+
 current_dir = os.path.dirname(os.path.realpath(__file__))
 package_dir = os.path.realpath(os.path.join(current_dir, os.pardir))
 
@@ -33,4 +33,3 @@ log.addHandler(c_handler)
 log.addHandler(f_handler)
 
 log.info('Admin Logged in now...')
-# pylint: enable=C0103

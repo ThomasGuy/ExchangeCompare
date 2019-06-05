@@ -28,7 +28,7 @@ async def start(loop):
             loop.stop()
             exit()
         else:
-            await compare.show()
+            compare.show()
 
 
 def main():

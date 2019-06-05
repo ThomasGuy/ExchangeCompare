@@ -14,25 +14,29 @@ class Huobi(Api):
     Hides the Huobi interface
     """
 
-    def __init__(self, pairs):
+    def __init__(self, pairs, base):
+        self.name = 'Huobi'
         self.host = host
         self.pairs = pairs
+        self.base = base
 
-    async def fetch(self, session):
+    async def fetch(self, session, url=None, params=''):
         """Trading pairs in market currency USDT"""
         compData = {}
         for pair in self.pairs:
             url = self.host
-            sym = pair[:3].lower() + "usdt"
+            sym = pair.lower() + self.base.lower()
             params = {'symbol': sym}
             try:
                 data = await super().fetch(session, url, params)
-            except NoData as err:
-                log.info(f"No data: {err}")
-            except Exception:
-                raise
-            else:
                 attr = data['tick']
-                compData[pair[:3]] = [attr['ask'][0], attr['bid'][0]]
+            except KeyError as err:
+                log.debug(f'{self.name}: {sym}\n data:{data} {repr(err)}')
+            except NoData as err:
+                log.info(f"{self.name} No data:{sym} {err}")
+                compData[pair] = ['na', 'na']
+
+            else:
+                compData[pair] = [attr['ask'][0], attr['bid'][0]]
 
         return compData

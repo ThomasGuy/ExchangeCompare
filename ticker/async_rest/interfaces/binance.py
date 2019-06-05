@@ -14,27 +14,29 @@ class Binance(Api):
     Hides the Binance interface
     """
 
-    def __init__(self, pairs):
+    def __init__(self, pairs, base):
+        self.name = 'Binance'
         self.host = host
         self.pairs = pairs
-        self.params = {
-            'symbol': ''
-        }
+        self.base = base
 
-    async def fetch(self, session, params=''):
+    async def fetch(self, session, url=None, params=''):
         """Trading pairs in market currency USDT"""
         compData = {}
         for pair in self.pairs:
-            self.params['symbol'] = pair + 'T'
+            sym = pair + self.base
+            params = {'symbol': sym}
             url = self.host
             try:
-                data = await super().fetch(session, url, self.params)
+                data = await super().fetch(session, url, params)
+            except KeyError as err:
+                log.debug(f'{self.name}: {sym} {repr(err)}')
             except NoData as err:
-                log.info(f"No data: {err}")
-            except Exception:
-                raise
+                log.info(f"{self.name} No data:{sym} {err}")
+                compData[pair] = ['na', 'na']
+
             else:
-                compData[pair[:3]] = [
+                compData[pair] = [
                     float(data['askPrice']), float(data['bidPrice'])]
 
         return compData
