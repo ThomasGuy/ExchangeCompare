@@ -20,7 +20,7 @@ class Huobi(Api):
         self.pairs = pairs
         self.base = base
 
-    async def fetch(self, session, url=None, params=''):
+    async def fetch(self, session, url=None, params='', **kwargs):
         """Trading pairs in market currency USDT"""
         compData = {}
         for pair in self.pairs:
@@ -28,7 +28,7 @@ class Huobi(Api):
             sym = pair.lower() + self.base.lower()
             params = {'symbol': sym}
             try:
-                data = await super().fetch(session, url, params)
+                data = await super().fetch(session, url, params, **kwargs)
                 attr = data['tick']
             except KeyError as err:
                 log.debug(f'{self.name}: {sym}\n data:{data} {repr(err)}')

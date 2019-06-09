@@ -2,7 +2,7 @@
 import logging
 import os
 
-from .async_rest.compare import Compare, setupData
+from .async_rest.compare import Compare, setupDataDir
 from .start import main
 
 current_dir = os.path.dirname(os.path.realpath(__file__))

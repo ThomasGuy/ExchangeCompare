@@ -7,23 +7,42 @@ from pathlib import Path
 # package imports
 from .interfaces import Bitfinex, Bittrex, Binance, Huobi, Kraken, Kucoin, Poloniex, CoinbasePro
 
-pairs = ['BCH', 'EOS', 'ETC', 'ETH', 'LTC', 'NEO', 'XLM', 'XRP', 'ZEC', 'OMG',
-         'IOTA', 'DASH', 'BTG', 'ZRX']
+pairs = ['ADA',
+         'BCH',
+         'BSV',
+         'BTG',
+         'DASH',
+         'EOS',
+         'ETC',
+         'ETH',
+         'IOTA',
+         'LTC',
+         'NEO',
+         'OMG',
+         'TRX',
+         'XEM',
+         'XLM',
+         'XMR',
+         'XRP',
+         'XTZ',
+         'ZEC',
+         'ZRX']
+
 base = 'BTC'
 exchanges = ['Timestamp', 'Bitfinex', 'Bittrex', 'Binance',
              'Huboi', 'Kraken', 'Kucoin', 'Poloniex', 'Coinbase']
 
-dataPath = Path('./ticker/data').resolve()
+dataPath = Path('./data').resolve()
 
 
 log = logging.getLogger(__name__)
 
 
-def setupData(dataDir='bid_ask'):
+def setupDataDir(dataDir):
     """ Initialze csv files"""
     for pair in pairs:
         filename = pair.lower() + base.lower() + '.csv'
-        Path(f'./ticker/data/{dataDir}').mkdir(parents=True, exist_ok=True)
+        Path(f'./data/{dataDir}').mkdir(parents=True, exist_ok=True)
         f_path = dataPath / dataDir / filename
         with f_path.open(mode='w') as csvfile:
             filewrite = csv.writer(csvfile, quoting=csv.QUOTE_NONNUMERIC)

@@ -19,14 +19,14 @@ class Cex(Api):
         self.pairs = pairs
         self.base = base
 
-    async def fetch(self, session, url=None, params=''):
+    async def fetch(self, session, url=None, params='', **kwargs):
         """ Hides the Cex.io exchange interface """
         compData = {}
         for pair in self.pairs:
 
             url = f"{self.host}/{pair}/{self.base}"
             try:
-                data = await super().fetch(session, url, params)
+                data = await super().fetch(session, url, params, **kwargs)
             except KeyError as err:
                 log.debug(f'{self.name}: {pair} {repr(err)}')
             except NoData as err:

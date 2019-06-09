@@ -19,7 +19,7 @@ class Kraken(Api):
         self.pairs = pairs
         self.base = base
 
-    async def fetch(self, session, url=None, params=''):
+    async def fetch(self, session, url=None, params='', **kwargs):
         """Generate URL"""
         compData = {}
         for pair in self.pairs:
@@ -27,7 +27,9 @@ class Kraken(Api):
             sym = pair + 'XBT'
             params = {'pair': sym}
             try:
-                data = await super().fetch(session, url, params)
+                if pair in ['BTG', 'BSV', 'IOTA', 'NEO', 'OMG', 'TRX', 'XEM', 'ZRX']:
+                    raise NoData(f"caught {pair} in Kraken")
+                data = await super().fetch(session, url, params, **kwargs)
             except KeyError as err:
                 log.debug(f'{self.name}: {sym}\n data: {data}\n {repr(err)}')
             except NoData as err:

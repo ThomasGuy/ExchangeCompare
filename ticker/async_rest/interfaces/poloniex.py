@@ -19,7 +19,7 @@ class Poloniex(Api):
         self.pairs = pairs
         self.base = base
 
-    async def fetch(self, session, url=None, params=''):
+    async def fetch(self, session, url=None, params='', **kwargs):
         """ Hides the Kucoin exchange interface """
         compData = {}
         for pair in self.pairs:
@@ -29,6 +29,8 @@ class Poloniex(Api):
                       }
             url = self.host
             try:
+                if pair in ['ADA', 'BCH', 'BSV', 'BTG', 'IOTA', 'TRX', 'NEO', 'XLM', 'XTZ']:
+                    raise NoData(f"caught {pair} in Poloniex.")
                 data = await super().fetch(session, url, params)
             except KeyError as err:
                 log.debug(f'{self.name}: {pair} {repr(err)}')

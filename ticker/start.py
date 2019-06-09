@@ -6,7 +6,7 @@ from pathlib import Path
 
 import aiohttp
 
-from ticker import Compare, setupData
+from ticker import Compare, setupDataDir
 
 log = logging.getLogger(__name__)
 
@@ -28,7 +28,7 @@ async def start(loop, dataDir):
             await client.close()
             log.debug("client_session closed")
             loop.stop()
-        except Exception as err:
+        except Exception as err:  # pylint: disable=broad-except
             log.error(f"Major Error {err}", exc_info=True)
             await client.close()
             loop.stop()
@@ -39,32 +39,32 @@ async def start(loop, dataDir):
 
 def newDir():
     """Sort out our data storage directory"""
-    dataDir = input(" enter data directory ")
+    dataDir = input(" enter data directory name... ")
     # print("Is this correct")
-    if Path(f'./ticker/data/{dataDir}').exists():
+    if Path(f'./data/{dataDir}').exists():
         answer = input(
             '\nThis directory already exists. Do you want to overwrite it ?'
             '\n yes, no, exit, or append to it...    ')
         if answer[0] in ['y', 'n', 'e', 'Y', 'N', 'E', 'a', 'A']:
             if answer[0] in ['y', 'Y']:
                 print(f'\n{dataDir} directory cleaned')
-                setupData(dataDir=dataDir)
+                setupDataDir(dataDir=dataDir)
                 return dataDir
-            elif answer[0] in ['a', 'A']:
+            if answer[0] in ['a', 'A']:
                 print(f'\nappending to {dataDir}')
                 return dataDir
-            elif answer[0] in ['N', 'n']:
-                print('\nTry another directory name...')
+            if answer[0] in ['N', 'n']:
+                print('\nTry another directory name... ')
                 newDir()
             else:
-                print('Exiting Exchange Ticker Compare')
+                print('\nExiting Exchange Ticker Compare')
                 exit()
         else:
-            print('Wrong answer mate!')
+            print('\nWrong answer mate!')
             exit()
     else:
-        print('New directory created')
-        setupData(dataDir=dataDir)
+        print(f'\nNew directory {dataDir} created')
+        setupDataDir(dataDir=dataDir)
         return dataDir
 
 

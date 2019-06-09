@@ -20,7 +20,7 @@ class Binance(Api):
         self.pairs = pairs
         self.base = base
 
-    async def fetch(self, session, url=None, params=''):
+    async def fetch(self, session, url=None, params='', **kwargs):
         """Trading pairs in market currency USDT"""
         compData = {}
         for pair in self.pairs:
@@ -28,7 +28,9 @@ class Binance(Api):
             params = {'symbol': sym}
             url = self.host
             try:
-                data = await super().fetch(session, url, params)
+                if pair in ['BCH', 'BSV', 'BTG', 'IOTA', 'EOS', 'XTZ']:
+                    raise NoData(f"caught {pair} in Binance.")
+                data = await super().fetch(session, url, params, **kwargs)
             except KeyError as err:
                 log.debug(f'{self.name}: {sym} {repr(err)}')
             except NoData as err:

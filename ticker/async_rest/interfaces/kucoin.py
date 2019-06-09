@@ -57,11 +57,13 @@ class Kucoin(Api):
             url = self.host + an_endpoint
 
             try:
-                data = await super().fetch(session, url, params=params)
+                if pair in ['ADA', 'BCH', 'BSV', 'BTG', 'IOTA', 'XEM', 'XTZ', 'ZEC']:
+                    raise NoData(f"caught {pair} in Kucoin.")
+                data = await super().fetch(session, url, params=params, **kwargs)
             except KeyError as err:
                 log.debug(f'{self.name}: {pair} {repr(err)}')
-            except NoData:
-                log.info(f"{self.name} No data:{pair}")
+            except NoData as err:
+                log.info(f"{self.name} No data:{pair} {err}")
                 compData[pair] = ['na', 'na']
             except TypeError as msg:
                 log.error(f"{self.name} {pair} TypeError: {msg}")

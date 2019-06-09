@@ -1,10 +1,9 @@
 .vscode
 *.ipynb
+.ipynb_checkponts/
 .venv
 logs/
+data/
 
 __pycache__
 .ipynb*
-
-
-ticker/data/

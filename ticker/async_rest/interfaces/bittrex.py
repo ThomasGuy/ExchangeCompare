@@ -28,7 +28,9 @@ class Bittrex(Api):
             params = {'market': sym}
             url = self.host
             try:
-                data = await super().fetch(session, url, params=params)
+                if pair in ['BTG', 'EOS', 'IOTA', 'XTZ']:
+                    raise NoData(f"caught {pair} in Bittrex.")
+                data = await super().fetch(session, url, params=params, **kwargs)
             except KeyError as err:
                 log.debug(f'{self.name}: {pair} {repr(err)}')
             except NoData as err:

@@ -37,11 +37,13 @@ class Bitfinex(Api):
             url = self.host
             params = {'symbols': sym + self.base}
             try:
-                data = await super().fetch(session, url, params=params)
+                if pair in ['ADA', 'XEM']:      # try resrtrict 429 too many requests
+                    raise NoData(f"caught {pair} in Bitfinex")
+                data = await super().fetch(session, url, params=params, **kwargs)
             except KeyError as err:
                 log.warning(f'{self.name}: {pair} {repr(err)}')
             except NoData as err:
-                log.warning(f"{self.name} No data:{pair} {err}")
+                log.info(f"{self.name} No data:{pair} {err}")
                 comp_data[pair] = ['na', 'na']
 
             else:
