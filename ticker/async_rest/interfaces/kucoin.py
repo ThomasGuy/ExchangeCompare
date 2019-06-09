@@ -5,7 +5,7 @@ import hashlib
 import hmac
 import base64
 import os
-import json
+# import json
 
 from .api import Api, NoData
 
@@ -16,13 +16,12 @@ host = "https://api.kucoin.com"  # 'ETH-BTC'
 an_endpoint = "/api/v1/market/orderbook/level1"
 
 
-def auth(endpoint, data):
+def auth(endpoint, data=''):
     """ Example for get balance of accounts in python"""
     api_key = os.getenv('KUCOIN_KEY') or "api_key"
     api_secret = os.getenv('KUCOIN_SECRET') or "api_secret"
     api_passphrase = os.getenv('KUCOIN_PASSPHRASE') or "api_passphrase"
     now = int(time.time() * 1000)
-    print(data)
     str_to_sign = str(now) + 'GET' + endpoint + data
 
     signature = base64.b64encode(
@@ -43,25 +42,26 @@ class Kucoin(Api):
 
     def __init__(self, pairs, base):
         self.name = 'KuCoin'
-        self.host = host + an_endpoint
+        self.host = host
         self.pairs = pairs
         self.base = base
 
-    async def fetch(self, session, **kwargs):
+    async def fetch(self, session, url=None, params='', **kwargs):
         """ Hides the Kucoin exchange interface """
         compData = {}
         for pair in self.pairs:
-            sym = pair + '-' + self.base
-            params = {'symbol': sym}
-            data_json = json.dumps(params)
-            headers = auth(an_endpoint, data_json)
-            url = self.host
+            sym = f"{pair}-{self.base}"
+            params = {"symbol": sym}
+            # data_json = json.dumps(params)
+            # headers = auth(an_endpoint, data_json)
+            url = self.host + an_endpoint
+
             try:
-                data = await super().fetch(session, url, params=data_json, headers=headers)
+                data = await super().fetch(session, url, params=params)
             except KeyError as err:
                 log.debug(f'{self.name}: {pair} {repr(err)}')
-            except NoData as err:
-                log.info(f"{self.name} No data:{pair} {err}")
+            except NoData:
+                log.info(f"{self.name} No data:{pair}")
                 compData[pair] = ['na', 'na']
             except TypeError as msg:
                 log.error(f"{self.name} {pair} TypeError: {msg}")

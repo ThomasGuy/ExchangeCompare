@@ -21,7 +21,7 @@ class Bitfinex(Api):
         self.pairs = pairs
         self.base = base
 
-    async def fetch(self, session, url=None, params=''):
+    async def fetch(self, session, url=None, params='', **kwargs):
         """ request http """
         comp_data = {}
         for pair in self.pairs:
@@ -37,7 +37,7 @@ class Bitfinex(Api):
             url = self.host
             params = {'symbols': sym + self.base}
             try:
-                data = await super().fetch(session, url, params)
+                data = await super().fetch(session, url, params=params)
             except KeyError as err:
                 log.warning(f'{self.name}: {pair} {repr(err)}')
             except NoData as err:

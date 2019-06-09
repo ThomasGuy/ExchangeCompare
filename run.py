@@ -1,4 +1,4 @@
-import asyncio
+"""Start by setting data store directory"""
 
 from ticker import main
 

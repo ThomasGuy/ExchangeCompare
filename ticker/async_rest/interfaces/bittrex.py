@@ -20,7 +20,7 @@ class Bittrex(Api):
         self.pairs = pairs
         self.base = base
 
-    async def fetch(self, session, url=None, params=''):
+    async def fetch(self, session, url=None, params='', **kwargs):
         """ Hides the Bittrex exchange interface """
         compData = {}
         for pair in self.pairs:
@@ -28,7 +28,7 @@ class Bittrex(Api):
             params = {'market': sym}
             url = self.host
             try:
-                data = await super().fetch(session, url, params)
+                data = await super().fetch(session, url, params=params)
             except KeyError as err:
                 log.debug(f'{self.name}: {pair} {repr(err)}')
             except NoData as err:

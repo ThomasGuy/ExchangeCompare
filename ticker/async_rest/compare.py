@@ -5,34 +5,33 @@ import logging
 from pathlib import Path
 
 # package imports
-from .interfaces import Bitfinex, Bittrex, Binance, Huobi, Kraken, Kucoin, Cex, Poloniex
+from .interfaces import Bitfinex, Bittrex, Binance, Huobi, Kraken, Kucoin, Poloniex, CoinbasePro
 
 pairs = ['BCH', 'EOS', 'ETC', 'ETH', 'LTC', 'NEO', 'XLM', 'XRP', 'ZEC', 'OMG',
-         'IOTA', 'DASH', 'ZIL', 'ZRX']
+         'IOTA', 'DASH', 'BTG', 'ZRX']
 base = 'BTC'
 exchanges = ['Timestamp', 'Bitfinex', 'Bittrex', 'Binance',
-             'Huboi', 'Kraken', 'Kucoin', 'Cex', 'Poloniex']
+             'Huboi', 'Kraken', 'Kucoin', 'Poloniex', 'Coinbase']
 
-dataPath = Path('./ticker/data')
-dataDir = 'bid_ask'
+dataPath = Path('./ticker/data').resolve()
+
 
 log = logging.getLogger(__name__)
 
 
-def setupData():
+def setupData(dataDir='bid_ask'):
     """ Initialze csv files"""
     for pair in pairs:
         filename = pair.lower() + base.lower() + '.csv'
+        Path(f'./ticker/data/{dataDir}').mkdir(parents=True, exist_ok=True)
         f_path = dataPath / dataDir / filename
-        print(repr(f_path))
         with f_path.open(mode='w') as csvfile:
-            filewriter = csv.writer(csvfile, quoting=csv.QUOTE_NONNUMERIC)
-            filewriter.writerow(exchanges)
+            filewrite = csv.writer(csvfile, quoting=csv.QUOTE_NONNUMERIC)
+            filewrite.writerow(exchanges)
 
 
 class Compare:
     """Compare a pair across all exchanges"""
-    # setupData()
     tasks = list()
     bfx = Bitfinex(pairs, base)
     bitx = Bittrex(pairs, base)
@@ -40,11 +39,12 @@ class Compare:
     huob = Huobi(pairs, base)
     krak = Kraken(pairs, base)
     kuco = Kucoin(pairs, base)
-    cexx = Cex(pairs, base)
+    cbpr = CoinbasePro(pairs, base)
     polo = Poloniex(pairs, base)
 
-    def __init__(self, session):
+    def __init__(self, session, dataDir):
         self.session = session
+        self.dataDir = dataDir
 
     async def addTasks(self):
         """It appears i need to regenerate tasks for each iteration...
@@ -64,9 +64,9 @@ class Compare:
         self.tasks.append(asyncio.create_task(
             self.kuco.fetch(self.session)))
         self.tasks.append(asyncio.create_task(
-            self.cexx.fetch(self.session)))
-        self.tasks.append(asyncio.create_task(
             self.polo.fetch(self.session)))
+        self.tasks.append(asyncio.create_task(
+            self.cbpr.fetch(self.session)))
 
     async def csvData(self, timeStamp: int):
         """ grab the data from each exchange instance and save to csv """
@@ -74,7 +74,7 @@ class Compare:
         for pair in pairs:
             row = list()
             filename = pair.lower() + base.lower() + '.csv'
-            f_path = dataPath / dataDir / filename
+            f_path = dataPath / self.dataDir / filename
             row.append(timeStamp)
             for idx, item in enumerate(data[1:]):
                 try:
