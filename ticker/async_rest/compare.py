@@ -33,7 +33,7 @@ exchanges = ['Timestamp', 'Bitfinex', 'Bittrex', 'Binance',
              'Huboi', 'Kraken', 'Kucoin', 'Poloniex', 'Coinbase']
 
 dataPath = Path('./data').resolve()
-
+ffff = 'what is it'
 
 log = logging.getLogger(__name__)
 
@@ -52,7 +52,7 @@ def setupDataDir(dataDir):
 class Compare:
     """Compare a pair across all exchanges"""
     tasks = list()
-    bfx = Bitfinex(pairs, base)
+    btfx = Bitfinex(pairs, base)
     bitx = Bittrex(pairs, base)
     binn = Binance(pairs, base)
     huob = Huobi(pairs, base)
@@ -69,9 +69,9 @@ class Compare:
         """It appears i need to regenerate tasks for each iteration...
         hmmm look into this"""
         self.tasks = list()
-        self.tasks.append(asyncio.create_task(asyncio.sleep(65)))
+        self.tasks.append(asyncio.create_task(asyncio.sleep(180)))
         self.tasks.append(asyncio.create_task(
-            self.bfx.fetch(self.session)))
+            self.btfx.fetch(self.session)))
         self.tasks.append(asyncio.create_task(
             self.bitx.fetch(self.session)))
         self.tasks.append(asyncio.create_task(

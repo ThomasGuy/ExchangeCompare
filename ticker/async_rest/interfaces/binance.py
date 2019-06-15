@@ -28,7 +28,7 @@ class Binance(Api):
             params = {'symbol': sym}
             url = self.host
             try:
-                if pair in ['BCH', 'BSV', 'BTG', 'IOTA', 'EOS', 'XTZ']:
+                if pair in ['BCH', 'BSV', 'IOTA', 'EOS', 'XTZ']:
                     raise NoData(f"caught {pair} in Binance.")
                 data = await super().fetch(session, url, params, **kwargs)
             except KeyError as err:

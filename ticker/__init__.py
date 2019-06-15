@@ -19,7 +19,7 @@ c_handler = logging.StreamHandler()
 f_handler = logging.FileHandler('.\\logs\\ticker.log', mode='w')
 
 c_handler.setLevel(logging.ERROR)
-f_handler.setLevel(logging.DEBUG)
+f_handler.setLevel(logging.ERROR)
 
 # Create formatters and add it to handlers
 c_format = logging.Formatter('%(name)s - %(levelname)s - %(message)s')
