@@ -1,9 +1,7 @@
 .vscode
-*.ipynb
-.ipynb_checkponts/
 .venv
 logs/
 
 
 __pycache__
-.ipynb*
+*.pyc
