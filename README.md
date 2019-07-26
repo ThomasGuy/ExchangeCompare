@@ -11,3 +11,6 @@ python -m venv .myenv
 
 pip install -r requirements.txt
 
+
+create a directory in root directory  `logs`
+
