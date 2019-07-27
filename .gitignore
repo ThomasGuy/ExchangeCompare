@@ -1,7 +1,8 @@
 .vscode
 .venv
-logs/
+logs/*.log
 
 
 __pycache__
 *.pyc
+data/**/*.csv
