@@ -70,7 +70,8 @@ class Compare:
         """It appears i need to regenerate tasks for each iteration...
         hmmm look into this"""
         self.tasks = list()
-        self.tasks.append(asyncio.create_task(asyncio.sleep(180)))
+        # sample data every 90 seconds
+        self.tasks.append(asyncio.create_task(asyncio.sleep(90)))
         self.tasks.append(asyncio.create_task(
             self.btfx.fetch(self.session)))
         self.tasks.append(asyncio.create_task(
