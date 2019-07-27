@@ -1,7 +1,9 @@
 # ExchangeCompare
 
 Compare ticker prices across various crypto exchanges, then use pandas
-to see if there is enough difference to make any money transfering between exchanges
+to see if there is enough difference to make any money transfering between exchanges.
+Once running this program checks each of the exchanges ticker data every 3 minutes, and
+saves the data in .csv format.
 
 To use set up a virtual enviroment then fill it with requirements.txt
 

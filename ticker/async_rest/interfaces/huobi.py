@@ -11,7 +11,7 @@ key = '7b641835-fa60a6e4-ez2xc4vb6n-f5f99'
 
 class Huobi(Api):
     """
-    Hides the Huobi interface
+    Hides the Huobi interface, extends from class Api (api.py)
     """
 
     def __init__(self, pairs, base):
@@ -21,7 +21,7 @@ class Huobi(Api):
         self.base = base
 
     async def fetch(self, session, url=None, params='', **kwargs):
-        """Trading pairs in market currency USDT"""
+        """Trading pairs in market base currency"""
         compData = {}
         for pair in self.pairs:
             url = self.host

@@ -11,7 +11,7 @@ key = '55c8cd76cfbc42af822adc968eec7b49'
 
 class Bittrex(Api):
     """
-    Hides the Bittrex interface
+    Hides the Bittrex interface, extends from class Api (api.py)
     """
 
     def __init__(self, pairs, base):
@@ -21,7 +21,7 @@ class Bittrex(Api):
         self.base = base
 
     async def fetch(self, session, url=None, params='', **kwargs):
-        """ Hides the Bittrex exchange interface """
+        """ Trading pairs in market base currency """
         compData = {}
         for pair in self.pairs:
             sym = self.base + '-' + pair

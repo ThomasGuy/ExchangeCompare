@@ -11,7 +11,7 @@ host = "https://api.binance.com/api/v3/ticker/bookTicker"
 
 class Binance(Api):
     """
-    Hides the Binance interface
+    Hides the Binance interface, extends from class Api (api.py)
     """
 
     def __init__(self, pairs, base):
@@ -21,7 +21,7 @@ class Binance(Api):
         self.base = base
 
     async def fetch(self, session, url=None, params='', **kwargs):
-        """Trading pairs in market currency USDT"""
+        """Trading pairs in market base currency"""
         compData = {}
         for pair in self.pairs:
             sym = pair + self.base

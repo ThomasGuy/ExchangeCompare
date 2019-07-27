@@ -10,7 +10,7 @@ host = "https://poloniex.com/public"  # 'USD-ETH'
 
 class Poloniex(Api):
     """
-    Hides the Poloniex interface
+    Hides the Poloniex interface, extends from class Api (api.py)
     """
 
     def __init__(self, pairs, base):
@@ -20,7 +20,7 @@ class Poloniex(Api):
         self.base = base
 
     async def fetch(self, session, url=None, params='', **kwargs):
-        """ Hides the Kucoin exchange interface """
+        """ Trading pairs in market base currency """
         compData = {}
         for pair in self.pairs:
             params = {'command': 'returnOrderBook',

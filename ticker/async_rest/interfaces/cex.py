@@ -10,7 +10,7 @@ host = "https://cex.io/api/ticker"  # 'USD-BTC'
 
 class Cex(Api):
     """
-    Hides the Cex.io interface
+    Hides the Cex.io interface, extends from class Api (api.py)
     """
 
     def __init__(self, pairs, base):
@@ -20,7 +20,7 @@ class Cex(Api):
         self.base = base
 
     async def fetch(self, session, url=None, params='', **kwargs):
-        """ Hides the Cex.io exchange interface """
+        """ Trading pairs in market base currency """
         compData = {}
         for pair in self.pairs:
 

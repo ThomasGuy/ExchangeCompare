@@ -12,7 +12,7 @@ host = "https://api-pub.bitfinex.com/v2/tickers/"
 
 class Bitfinex(Api):
     """
-    Hides the Bitfinex interface
+    Hides the Bitfinex interface, extends from class Api (api.py)
     """
 
     def __init__(self, pairs, base):
@@ -22,7 +22,7 @@ class Bitfinex(Api):
         self.base = base
 
     async def fetch(self, session, url=None, params='', **kwargs):
-        """ request http """
+        """ Trading pairs in market base currency"""
         comp_data = {}
         for pair in self.pairs:
             if pair == 'IOTA':

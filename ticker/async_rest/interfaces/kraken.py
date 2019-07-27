@@ -10,7 +10,7 @@ host = "https://api.kraken.com/0/public/Ticker"
 
 class Kraken(Api):
     """
-    Hides the Kraken interface, only on BTC
+    Hides the Kraken interface, only on BTC, extends from class Api (api.py)
     """
 
     def __init__(self, pairs, base):
@@ -20,7 +20,7 @@ class Kraken(Api):
         self.base = base
 
     async def fetch(self, session, url=None, params='', **kwargs):
-        """Generate URL"""
+        """Trading pairs in market base currency"""
         compData = {}
         for pair in self.pairs:
             url = self.host

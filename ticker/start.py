@@ -15,9 +15,11 @@ async def start(loop, dataDir):
     """Contiuous loop collect exchange data"""
     print('Press   Ctrl + c   to exit (and wait a few seconds'
           ' for asyncronous code to complete)\nRunning...')
+    # initialse client session
     client = aiohttp.ClientSession(loop=loop)
     log.info("client session open")
     compare = Compare(client, dataDir)
+    # loop runs forever
     while not client.closed:
         timestamp = int(time.time())
         try:

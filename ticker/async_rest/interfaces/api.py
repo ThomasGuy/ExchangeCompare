@@ -13,7 +13,7 @@ class NoData(Exception):
 
 class Api:
     """
-    Generic Aiohttp ClientSession
+    Generic Aiohttp ClientSession, this asybcronous client fetchs exchange ticker data
     """
 
     async def fetch(self, session, url, params='', **kwargs):
@@ -32,4 +32,5 @@ class Api:
             log.info(f"ClientResponseError: {err} {params}")
             raise NoData
         else:
+            # if succesful return exchange data
             return json.loads(text)

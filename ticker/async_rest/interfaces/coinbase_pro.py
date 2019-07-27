@@ -10,7 +10,7 @@ host = "https://api.pro.coinbase.com"  # 'USD-BTC'
 
 class CoinbasePro(Api):
     """
-    Hides the Coinbase_Pro interface
+    Hides the Coinbase_Pro interface, extends from class Api (api.py)
     """
 
     def __init__(self, pairs, base):
@@ -20,7 +20,7 @@ class CoinbasePro(Api):
         self.base = base
 
     async def fetch(self, session, url=None, params='', **kwargs):
-        """ Hides the Coinbase Pro exchange interface """
+        """ Trading pairs in market base currency """
         compData = {}
         for pair in self.pairs:
 

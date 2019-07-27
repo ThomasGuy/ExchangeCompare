@@ -29,6 +29,7 @@ pairs = ['ADA',
          'ZRX']
 
 base = 'BTC'
+# Timestamp added to exchanges for use by pandas dataframe
 exchanges = ['Timestamp', 'Bitfinex', 'Bittrex', 'Binance',
              'Huboi', 'Kraken', 'Kucoin', 'Poloniex', 'Coinbase']
 
