@@ -14,3 +14,6 @@ pip install -r requirements.txt
 
 create a directory in root directory  `logs`
 
+
+in a terminal root directory run `jupyter notebook` to acces the *.ipynb notebooks to analyse data using pandas
+
